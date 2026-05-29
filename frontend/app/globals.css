@@ -1,0 +1,162 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* ── Light theme (default) ─────────────────────────────── */
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 189 94% 38%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 196 40% 93%;
+    --secondary-foreground: 222 47% 20%;
+    --muted: 210 40% 94%;
+    --muted-foreground: 215 16% 45%;
+    --accent: 196 50% 90%;
+    --accent-foreground: 189 94% 28%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 28% 88%;
+    --input: 214 28% 92%;
+    --ring: 189 94% 38%;
+    --radius: 0.75rem;
+  }
+
+  /* ── Dark theme (.dark class on <html>) ────────────────── */
+  .dark {
+    --background: 222 47% 4%;
+    --foreground: 210 40% 98%;
+    --card: 222 40% 7%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 44% 6%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 189 94% 53%;
+    --primary-foreground: 222 47% 4%;
+    --secondary: 196 64% 10%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 12%;
+    --muted-foreground: 215 20% 52%;
+    --accent: 196 50% 11%;
+    --accent-foreground: 189 94% 53%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 196 28% 14%;
+    --input: 196 28% 11%;
+    --ring: 189 94% 53%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-card/60 backdrop-blur-md border border-border/50;
+  }
+
+  /* Dark-only glass stays readable in light mode */
+  .dark .glass {
+    @apply bg-card/50;
+  }
+
+  .glow-cyan {
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.15), 0 0 40px rgba(34, 211, 238, 0.05);
+  }
+
+  .glow-cyan-strong {
+    box-shadow: 0 0 30px rgba(34, 211, 238, 0.3), 0 0 60px rgba(34, 211, 238, 0.1);
+  }
+
+  /* Tone down glow in light mode */
+  :root:not(.dark) .glow-cyan {
+    box-shadow: 0 0 12px rgba(34, 211, 238, 0.12), 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-cyan-500 to-cyan-300 bg-clip-text text-transparent;
+  }
+
+  .dark .gradient-text {
+    @apply from-cyan-400 to-cyan-200;
+  }
+
+  .ai-badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium
+    bg-cyan-500/10 text-cyan-600 border border-cyan-500/20;
+  }
+
+  .dark .ai-badge {
+    @apply text-cyan-400 bg-cyan-400/10 border-cyan-400/20;
+  }
+
+  .card-hover {
+    @apply transition-all duration-200 hover:border-cyan-400/40 hover:shadow-lg hover:shadow-cyan-400/5;
+  }
+
+  .sidebar-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+    text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-150;
+  }
+
+  .sidebar-item-active {
+    @apply text-cyan-600 bg-cyan-500/10 hover:bg-cyan-500/15 hover:text-cyan-600;
+  }
+
+  .dark .sidebar-item-active {
+    @apply text-cyan-400 bg-cyan-400/10 hover:bg-cyan-400/15 hover:text-cyan-400;
+  }
+
+  .status-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+}
+
+@layer utilities {
+  .bg-cyber-grid {
+    background-image:
+      linear-gradient(rgba(34, 211, 238, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34, 211, 238, 0.04) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  /* Lighter grid in light mode */
+  :root:not(.dark) .bg-cyber-grid {
+    background-image:
+      linear-gradient(rgba(34, 211, 238, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34, 211, 238, 0.06) 1px, transparent 1px);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
