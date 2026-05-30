@@ -27,6 +27,31 @@
     --radius: 0.75rem;
   }
 
+  /* ── Force light theme on any container ────────────────── */
+  [data-theme="light"] {
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 189 94% 38%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 196 40% 93%;
+    --secondary-foreground: 222 47% 20%;
+    --muted: 210 40% 94%;
+    --muted-foreground: 215 16% 45%;
+    --accent: 196 50% 90%;
+    --accent-foreground: 189 94% 28%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 28% 88%;
+    --input: 214 28% 92%;
+    --ring: 189 94% 38%;
+    --radius: 0.75rem;
+    color-scheme: light;
+  }
+
   /* ── Dark theme (.dark class on <html>) ────────────────── */
   .dark {
     --background: 222 47% 4%;
