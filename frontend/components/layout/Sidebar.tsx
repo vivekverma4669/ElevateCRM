@@ -9,10 +9,10 @@ import {
   Sparkles,
   Activity,
   Settings,
-  Zap,
   LogOut,
   ChevronRight,
 } from 'lucide-react';
+import { Logo } from '@/components/Logo';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -35,14 +35,8 @@ export function Sidebar() {
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 flex flex-col bg-card border-r border-border z-40 shadow-sm">
       {/* Logo */}
-      <div className="flex items-center gap-3 px-6 py-5 border-b border-border">
-        <div className="w-8 h-8 rounded-lg bg-cyan-500/10 dark:bg-cyan-400/10 border border-cyan-500/30 dark:border-cyan-400/30 flex items-center justify-center glow-cyan flex-shrink-0">
-          <Zap className="w-4 h-4 text-cyan-500 dark:text-cyan-400" />
-        </div>
-        <div>
-          <span className="font-bold text-foreground">ElevateCRM</span>
-          <p className="text-[10px] text-muted-foreground">Sales Intelligence</p>
-        </div>
+      <div className="flex items-center gap-3 px-5 py-5 border-b border-border">
+        <Logo size="sm" showTagline />
       </div>
 
       {/* Nav */}

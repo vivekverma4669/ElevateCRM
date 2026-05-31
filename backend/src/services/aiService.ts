@@ -1,19 +1,18 @@
-import Anthropic from '@anthropic-ai/sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { env } from '../config/env';
 import { AILog, AIFeature } from '../models/AILog';
 import { cache, CACHE_KEYS } from '../redis/cache';
 import crypto from 'crypto';
 
-const anthropic = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
-
-const MODEL = 'claude-sonnet-4-6';
+const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY);
+const MODEL = 'gemini-2.0-flash';
 const MAX_TOKENS = 1024;
 
 function hashPrompt(prompt: string): string {
   return crypto.createHash('sha256').update(prompt).digest('hex').slice(0, 16);
 }
 
-async function callClaude(prompt: string, systemPrompt: string): Promise<{
+async function callGemini(prompt: string, systemPrompt: string): Promise<{
   content: string;
   tokensUsed: number;
   latencyMs: number;
@@ -23,21 +22,24 @@ async function callClaude(prompt: string, systemPrompt: string): Promise<{
   if (cached) return cached;
 
   const start = Date.now();
-  const message = await anthropic.messages.create({
+
+  const model = genAI.getGenerativeModel({
     model: MODEL,
-    max_tokens: MAX_TOKENS,
-    system: systemPrompt,
-    messages: [{ role: 'user', content: prompt }],
+    systemInstruction: systemPrompt,
+    generationConfig: { maxOutputTokens: MAX_TOKENS },
   });
 
-  const result = {
-    content: message.content[0].type === 'text' ? message.content[0].text : '',
-    tokensUsed: message.usage.input_tokens + message.usage.output_tokens,
+  const result = await model.generateContent(prompt);
+  const response = result.response;
+
+  const out = {
+    content: response.text(),
+    tokensUsed: response.usageMetadata?.totalTokenCount ?? 0,
     latencyMs: Date.now() - start,
   };
 
-  await cache.set(cacheKey, result, 300);
-  return result;
+  await cache.set(cacheKey, out, 300);
+  return out;
 }
 
 export const aiService = {
@@ -63,7 +65,7 @@ Always respond with valid JSON in this exact format:
 
     const prompt = `Analyze the following notes/emails for lead "${leadName}" and provide insights:\n\n${notes}`;
 
-    const { content, tokensUsed, latencyMs } = await callClaude(prompt, systemPrompt);
+    const { content, tokensUsed, latencyMs } = await callGemini(prompt, systemPrompt);
 
     let parsed;
     try {
@@ -118,7 +120,7 @@ Lead Name: ${leadName}
 Company: ${company}
 Context: ${context}`;
 
-    const { content, tokensUsed, latencyMs } = await callClaude(prompt, systemPrompt);
+    const { content, tokensUsed, latencyMs } = await callGemini(prompt, systemPrompt);
 
     let parsed;
     try {
@@ -163,7 +165,7 @@ Always respond with valid JSON:
 
     const prompt = `Analyze this CRM data and provide sales insights:\n${JSON.stringify(leadsData, null, 2)}`;
 
-    const { content, tokensUsed, latencyMs } = await callClaude(prompt, systemPrompt);
+    const { content, tokensUsed, latencyMs } = await callGemini(prompt, systemPrompt);
 
     let parsed;
     try {
@@ -196,15 +198,15 @@ Always respond with valid JSON:
     context: string,
     userId: string
   ): Promise<string> {
-    const systemPrompt = `You are ElevateAI, an intelligent CRM assistant for ElevateCRM.
-You help sales teams manage leads, track pipelines, and grow revenue.
+    const systemPrompt = `You are ElevateAI, an intelligent CRM assistant for ElevateCRM — India's smart sales CRM.
+You help Indian sales teams manage leads, track pipelines, and grow revenue.
 You have access to the user's CRM context below. Provide helpful, concise, actionable responses.
 Keep responses under 200 words unless more detail is explicitly needed.
 
 CRM Context:
 ${context}`;
 
-    const { content, tokensUsed, latencyMs } = await callClaude(message, systemPrompt);
+    const { content, tokensUsed, latencyMs } = await callGemini(message, systemPrompt);
 
     await AILog.create({
       feature: 'assistant' as AIFeature,

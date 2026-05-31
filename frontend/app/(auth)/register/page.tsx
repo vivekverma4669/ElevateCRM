@@ -1,13 +1,15 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Eye, EyeOff, Zap, ArrowRight, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, ArrowRight, Loader2, Sun, Moon } from 'lucide-react';
+import { useTheme } from 'next-themes';
 import { useAuth } from '@/hooks/useAuth';
 import { AxiosError } from 'axios';
+import { Logo } from '@/components/Logo';
 
 const schema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -23,8 +25,12 @@ type FormData = z.infer<typeof schema>;
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
   const { registerAsync, isRegisterLoading } = useAuth();
   const [error, setError] = useState('');
+
+  useEffect(() => setMounted(true), []);
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -44,23 +50,32 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-background bg-cyber-grid flex items-center justify-center p-4 relative overflow-hidden">
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-cyan-400/10 rounded-full blur-3xl pointer-events-none" />
 
+      {/* Theme toggle */}
+      {mounted && (
+        <button
+          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          className="absolute top-4 right-4 w-10 h-10 rounded-lg border border-border bg-card flex items-center justify-center hover:bg-accent text-muted-foreground hover:text-foreground transition-colors z-10"
+        >
+          {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+        </button>
+      )}
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
-        <div className="flex items-center justify-center gap-2 mb-8">
-          <div className="w-10 h-10 rounded-xl bg-cyan-400/10 border border-cyan-400/30 flex items-center justify-center glow-cyan">
-            <Zap className="w-5 h-5 text-cyan-400" />
-          </div>
-          <span className="text-2xl font-bold gradient-text">ElevateCRM</span>
+        {/* Logo */}
+        <div className="flex items-center justify-center mb-8">
+          <Logo size="lg" showTagline />
         </div>
 
         <div className="glass rounded-2xl p-8 glow-cyan">
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-foreground mb-1">Create your account</h1>
-            <p className="text-muted-foreground text-sm">Start your AI-powered sales journey</p>
+            <p className="text-muted-foreground text-sm">Powering India&apos;s fastest-growing sales teams</p>
           </div>
 
           {error && (
@@ -78,7 +93,7 @@ export default function RegisterPage() {
               <label className="block text-sm font-medium text-foreground mb-1.5">Full name</label>
               <input
                 {...register('name')}
-                placeholder="Alex Johnson"
+                placeholder="Rahul Sharma"
                 className="w-full px-4 py-2.5 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400/50 transition-all text-sm"
               />
               {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name.message}</p>}
@@ -89,7 +104,7 @@ export default function RegisterPage() {
               <input
                 {...register('email')}
                 type="email"
-                placeholder="you@company.com"
+                placeholder="you@company.in"
                 className="w-full px-4 py-2.5 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400/50 transition-all text-sm"
               />
               {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>}
@@ -135,6 +150,10 @@ export default function RegisterPage() {
             </Link>
           </p>
         </div>
+
+        <p className="mt-5 text-center text-xs text-muted-foreground/60">
+          Made with ❤️ in India 🇮🇳
+        </p>
       </motion.div>
     </div>
   );

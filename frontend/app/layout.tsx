@@ -10,12 +10,12 @@ export const metadata: Metadata = {
     default: 'ElevateCRM',
     template: '%s | ElevateCRM',
   },
-  description: 'AI-Powered Customer & Sales Intelligence Platform',
-  keywords: ['CRM', 'AI', 'Sales', 'Leads', 'Pipeline'],
+  description: 'India\'s AI-Powered CRM — Built for Indian Sales Teams',
+  keywords: ['CRM', 'AI', 'Sales', 'Leads', 'Pipeline', 'India', 'Indian CRM', 'Sales CRM India'],
   authors: [{ name: 'ElevateCRM' }],
   openGraph: {
-    title: 'ElevateCRM',
-    description: 'AI-Powered Customer & Sales Intelligence Platform',
+    title: 'ElevateCRM — India\'s Smart Sales CRM',
+    description: 'India\'s AI-Powered CRM — Built for Indian Sales Teams',
     type: 'website',
   },
 };

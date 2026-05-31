@@ -10,16 +10,16 @@ A production-grade AI-powered CRM SaaS platform built with Next.js, Express, Mon
 
 ## Stack
 
-| Layer | Technology |
-|-------|-----------|
+| Layer    | Technology                                        |
+| -------- | ------------------------------------------------- |
 | Frontend | Next.js 14 (App Router), TypeScript, Tailwind CSS |
-| UI | shadcn/ui, Framer Motion, Recharts |
-| State | TanStack Query, Zustand |
-| Backend | Node.js, Express.js, TypeScript |
-| Database | MongoDB Atlas, Mongoose |
-| Cache | Redis (ioredis) |
-| AI | Anthropic Claude API (claude-sonnet-4-6) |
-| Auth | JWT (access + refresh tokens) |
+| UI       | shadcn/ui, Framer Motion, Recharts                |
+| State    | TanStack Query, Zustand                           |
+| Backend  | Node.js, Express.js, TypeScript                   |
+| Database | MongoDB Atlas, Mongoose                           |
+| Cache    | Redis (ioredis)                                   |
+| AI       | Anthropic Claude API (claude-sonnet-4-6)          |
+| Auth     | JWT (access + refresh tokens)                     |
 
 ---
 
@@ -122,7 +122,7 @@ JWT_REFRESH_SECRET=min-32-char-secret
 JWT_EXPIRES_IN=15m
 JWT_REFRESH_EXPIRES_IN=7d
 REDIS_URL=redis://localhost:6379
-ANTHROPIC_API_KEY=sk-ant-...
+GEMINI_API_KEY=sk-ant-...
 FRONTEND_URL=http://localhost:3000
 AI_RATE_LIMIT_WINDOW_MS=900000
 AI_RATE_LIMIT_MAX=50
@@ -139,6 +139,7 @@ NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1
 ## API Endpoints
 
 ### Authentication
+
 ```
 POST /api/v1/auth/register
 POST /api/v1/auth/login
@@ -148,6 +149,7 @@ GET  /api/v1/auth/me
 ```
 
 ### Leads
+
 ```
 GET    /api/v1/leads
 POST   /api/v1/leads
@@ -161,6 +163,7 @@ POST   /api/v1/leads/:leadId/notes
 ```
 
 ### AI
+
 ```
 POST /api/v1/ai/summarize    # Lead summary
 POST /api/v1/ai/email        # Email generation
@@ -169,6 +172,7 @@ POST /api/v1/ai/chat         # AI assistant
 ```
 
 ### Dashboard
+
 ```
 GET /api/v1/dashboard/stats
 GET /api/v1/dashboard/analytics
@@ -189,14 +193,14 @@ All AI powered by Claude claude-sonnet-4-6 via Anthropic API with Redis caching.
 
 ## Redis Usage
 
-| Use Case | TTL |
-|----------|-----|
-| Dashboard stats | 5 minutes |
-| Lead list queries | 60 seconds |
-| AI response cache | 5 minutes |
-| Sales insights | 10 minutes |
-| Token blacklist | 15 minutes |
-| AI rate limiting | 15-minute window |
+| Use Case          | TTL              |
+| ----------------- | ---------------- |
+| Dashboard stats   | 5 minutes        |
+| Lead list queries | 60 seconds       |
+| AI response cache | 5 minutes        |
+| Sales insights    | 10 minutes       |
+| Token blacklist   | 15 minutes       |
+| AI rate limiting  | 15-minute window |
 
 ---
 
@@ -221,6 +225,7 @@ vercel deploy --prod
 5. Add all environment variables
 
 ### Database
+
 - MongoDB Atlas: Free M0 tier → Production M10+
 - Redis: Use Upstash for serverless Redis
 
