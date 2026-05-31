@@ -50,16 +50,21 @@ app.use(errorHandler);
 async function bootstrap(): Promise<void> {
   try {
     await connectDB();
-    await connectRedis();
-
-    const port = parseInt(env.PORT);
-    app.listen(port, () => {
-      console.log(`🚀 ElevateCRM API running on port ${port} [${env.NODE_ENV}]`);
-    });
   } catch (error) {
-    console.error('Failed to start server:', error);
+    console.error('Failed to connect to MongoDB:', error);
     process.exit(1);
   }
+
+  try {
+    await connectRedis();
+  } catch (error) {
+    console.warn('⚠️ Redis unavailable, continuing without cache/rate-limiting:', (error as Error).message);
+  }
+
+  const port = parseInt(env.PORT);
+  app.listen(port, () => {
+    console.log(`🚀 ElevateCRM API running on port ${port} [${env.NODE_ENV}]`);
+  });
 }
 
 // Graceful shutdown
