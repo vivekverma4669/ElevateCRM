@@ -21,6 +21,7 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
 
   const token = authHeader.split(' ')[1];
 
+  // Check blacklist — skip silently if Redis is unavailable
   try {
     const redis = getRedisClient();
     const isBlacklisted = await redis.get(`blacklist:${token}`);
@@ -28,7 +29,11 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
       sendError(res, 'Token has been invalidated', 401);
       return;
     }
+  } catch {
+    // Redis down — proceed without blacklist check
+  }
 
+  try {
     const decoded = verifyAccessToken(token);
     req.user = decoded;
     next();

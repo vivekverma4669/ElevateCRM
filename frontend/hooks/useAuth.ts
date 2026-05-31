@@ -1,6 +1,5 @@
 'use client';
-import { useEffect } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { authApi } from '@/lib/api';
 import { useAuthStore } from '@/store/authStore';
@@ -10,7 +9,7 @@ import { AxiosResponse } from 'axios';
 export function useAuth() {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { user, isAuthenticated, setAuth, setUser, clearAuth } = useAuthStore();
+  const { user, isAuthenticated, setAuth, clearAuth } = useAuthStore();
 
   const loginMutation = useMutation({
     mutationFn: (data: { email: string; password: string }) => authApi.login(data),
@@ -39,21 +38,6 @@ export function useAuth() {
       router.push('/login');
     },
   });
-
-  const { data: meData } = useQuery({
-    queryKey: ['me'],
-    queryFn: () => authApi.getMe(),
-    enabled: isAuthenticated,
-    retry: false,
-    select: (r) => r.data.data.user,
-  });
-
-  // Must be in useEffect — calling setUser in render body causes infinite re-renders
-  useEffect(() => {
-    if (meData && meData._id !== user?._id) {
-      setUser(meData);
-    }
-  }, [meData, user?._id, setUser]);
 
   return {
     user,
