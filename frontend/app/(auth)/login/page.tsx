@@ -7,7 +7,9 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Eye, EyeOff, ArrowRight, Loader2, Sun, Moon } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
+import { useAuthStore } from '@/store/authStore';
 import { AxiosError } from 'axios';
 import { Logo } from '@/components/Logo';
 
@@ -22,10 +24,20 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
+  const router = useRouter();
   const { loginAsync, isLoginLoading } = useAuth();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const _hasHydrated = useAuthStore((s) => s._hasHydrated);
   const [error, setError] = useState('');
 
   useEffect(() => setMounted(true), []);
+
+  // Redirect already-authenticated users away from login
+  useEffect(() => {
+    if (_hasHydrated && isAuthenticated) {
+      router.replace('/dashboard');
+    }
+  }, [_hasHydrated, isAuthenticated, router]);
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),

@@ -1,4 +1,5 @@
 'use client';
+import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { authApi } from '@/lib/api';
@@ -47,9 +48,12 @@ export function useAuth() {
     select: (r) => r.data.data.user,
   });
 
-  if (meData && meData._id !== user?._id) {
-    setUser(meData);
-  }
+  // Must be in useEffect — calling setUser in render body causes infinite re-renders
+  useEffect(() => {
+    if (meData && meData._id !== user?._id) {
+      setUser(meData);
+    }
+  }, [meData, user?._id, setUser]);
 
   return {
     user,

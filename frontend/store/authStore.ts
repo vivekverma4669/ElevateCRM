@@ -8,10 +8,12 @@ interface AuthState {
   refreshToken: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  _hasHydrated: boolean;
   setAuth: (user: User, accessToken: string, refreshToken: string) => void;
   setUser: (user: User) => void;
   clearAuth: () => void;
   setLoading: (loading: boolean) => void;
+  setHasHydrated: (val: boolean) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -22,6 +24,7 @@ export const useAuthStore = create<AuthState>()(
       refreshToken: null,
       isAuthenticated: false,
       isLoading: false,
+      _hasHydrated: false,
 
       setAuth: (user, accessToken, refreshToken) => {
         localStorage.setItem('accessToken', accessToken);
@@ -38,6 +41,7 @@ export const useAuthStore = create<AuthState>()(
       },
 
       setLoading: (isLoading) => set({ isLoading }),
+      setHasHydrated: (val) => set({ _hasHydrated: val }),
     }),
     {
       name: 'elevatecrm-auth',
@@ -48,6 +52,9 @@ export const useAuthStore = create<AuthState>()(
         refreshToken: state.refreshToken,
         isAuthenticated: state.isAuthenticated,
       }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );

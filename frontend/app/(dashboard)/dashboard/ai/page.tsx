@@ -35,7 +35,7 @@ export default function AIStudioPage() {
                 <Sparkles className="w-4 h-4 text-cyan-400" />
               </div>
               <span className="text-lg font-bold gradient-text">ElevateAI Studio</span>
-              <span className="ai-badge">Powered by Claude</span>
+              <span className="ai-badge">Powered by Gemini</span>
             </div>
             <p className="text-sm text-muted-foreground max-w-lg mb-4">
               Your AI-powered sales copilot. Analyze leads, generate professional emails, get real-time insights, and chat with your personal sales assistant.
