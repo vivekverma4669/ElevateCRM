@@ -15,8 +15,8 @@ export function useAuth() {
   const loginMutation = useMutation({
     mutationFn: (data: { email: string; password: string }) => authApi.login(data),
     onSuccess: (response: AxiosResponse<{ data: AuthResponse }>) => {
-      const { user, accessToken, refreshToken } = response.data.data;
-      setAuth(user, accessToken, refreshToken);
+      const { user, accessToken } = response.data.data;
+      setAuth(user, accessToken);
       router.push('/dashboard');
     },
   });
@@ -25,8 +25,8 @@ export function useAuth() {
     mutationFn: (data: { name: string; email: string; password: string }) =>
       authApi.register(data),
     onSuccess: (response: AxiosResponse<{ data: AuthResponse }>) => {
-      const { user, accessToken, refreshToken } = response.data.data;
-      setAuth(user, accessToken, refreshToken);
+      const { user, accessToken } = response.data.data;
+      setAuth(user, accessToken);
       router.push('/dashboard');
     },
   });
