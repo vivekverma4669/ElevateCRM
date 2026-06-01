@@ -71,7 +71,7 @@ export function RevenueChart({ data }: Props) {
             tick={{ fill: '#64748b', fontSize: 11 }}
             axisLine={false}
             tickLine={false}
-            tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+            tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}k`}
           />
           <Tooltip content={<CustomTooltip />} />
           <Area

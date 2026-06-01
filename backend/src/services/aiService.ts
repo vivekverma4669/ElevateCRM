@@ -1,19 +1,19 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import Groq from "groq-sdk";
 import { env } from "../config/env";
 import { AILog, AIFeature } from "../models/AILog";
 import { cache, CACHE_KEYS } from "../redis/cache";
 import { AppError } from "../middleware/errorHandler";
 import crypto from "crypto";
 
-const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY);
-const MODEL = "gemini-2.0-flash-lite";
+const groq = new Groq({ apiKey: env.GROQ_API_KEY });
+const MODEL = "llama-3.3-70b-versatile";
 const MAX_TOKENS = 1024;
 
 function hashPrompt(prompt: string): string {
   return crypto.createHash("sha256").update(prompt).digest("hex").slice(0, 16);
 }
 
-async function callGemini(
+async function callGroq(
   prompt: string,
   systemPrompt: string,
 ): Promise<{
@@ -31,41 +31,37 @@ async function callGemini(
 
   const start = Date.now();
 
-  const model = genAI.getGenerativeModel({
-    model: MODEL,
-    systemInstruction: systemPrompt,
-    generationConfig: { maxOutputTokens: MAX_TOKENS },
-  });
-
-  let result;
+  let completion;
   try {
-    result = await model.generateContent(prompt);
+    completion = await groq.chat.completions.create({
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: prompt },
+      ],
+      model: MODEL,
+      max_tokens: MAX_TOKENS,
+    });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     if (
       msg.includes("429") ||
       msg.includes("Too Many Requests") ||
-      msg.includes("quota")
+      msg.includes("rate_limit")
     ) {
       throw new AppError(
         "AI quota exceeded. Please try again in a few minutes.",
         429,
       );
     }
-    if (msg.includes("404") || msg.includes("not found")) {
-      throw new AppError(
-        "AI model not available. Please check your Google AI Studio plan.",
-        503,
-      );
+    if (msg.includes("401") || msg.includes("invalid_api_key")) {
+      throw new AppError("AI service authentication error.", 503);
     }
     throw new AppError("AI service error. Please try again.", 503);
   }
 
-  const response = result.response;
-
   const out = {
-    content: response.text(),
-    tokensUsed: response.usageMetadata?.totalTokenCount ?? 0,
+    content: completion.choices[0]?.message?.content ?? "",
+    tokensUsed: completion.usage?.total_tokens ?? 0,
     latencyMs: Date.now() - start,
   };
 
@@ -96,7 +92,7 @@ Always respond with valid JSON in this exact format:
 
     const prompt = `Analyze the following notes/emails for lead "${leadName}" and provide insights:\n\n${notes}`;
 
-    const { content, tokensUsed, latencyMs } = await callGemini(
+    const { content, tokensUsed, latencyMs } = await callGroq(
       prompt,
       systemPrompt,
     );
@@ -154,7 +150,7 @@ Lead Name: ${leadName}
 Company: ${company}
 Context: ${context}`;
 
-    const { content, tokensUsed, latencyMs } = await callGemini(
+    const { content, tokensUsed, latencyMs } = await callGroq(
       prompt,
       systemPrompt,
     );
@@ -202,7 +198,7 @@ Always respond with valid JSON:
 
     const prompt = `Analyze this CRM data and provide sales insights:\n${JSON.stringify(leadsData, null, 2)}`;
 
-    const { content, tokensUsed, latencyMs } = await callGemini(
+    const { content, tokensUsed, latencyMs } = await callGroq(
       prompt,
       systemPrompt,
     );
@@ -246,7 +242,7 @@ Keep responses under 200 words unless more detail is explicitly needed.
 CRM Context:
 ${context}`;
 
-    const { content, tokensUsed, latencyMs } = await callGemini(
+    const { content, tokensUsed, latencyMs } = await callGroq(
       message,
       systemPrompt,
     );

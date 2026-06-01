@@ -99,7 +99,7 @@ export function EmailGenerator() {
             value={form.context}
             onChange={(e) => setForm((f) => ({ ...f, context: e.target.value }))}
             rows={2}
-            placeholder="They're interested in our enterprise plan, budget is ~$50k, need quick onboarding..."
+            placeholder="They're interested in our enterprise plan, budget is ~₹50k, need quick onboarding..."
             className="w-full px-3 py-2 rounded-lg bg-input border border-border text-foreground text-sm placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-cyan-400/40 transition-all resize-none"
           />
         </div>

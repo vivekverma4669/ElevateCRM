@@ -46,9 +46,17 @@ export const authController = {
     try {
       const { email, password } = req.body;
 
-      const user = await User.findOne({ email, isActive: true }).select('+password +refreshToken');
-      if (!user || !(await user.comparePassword(password))) {
-        sendError(res, 'Invalid email or password', 401);
+      const user = await User.findOne({ email }).select('+password +refreshToken +isActive');
+      if (!user) {
+        sendError(res, 'No account found with this email. Please register to continue.', 404);
+        return;
+      }
+      if (!user.isActive) {
+        sendError(res, 'Your account has been deactivated. Please contact support.', 403);
+        return;
+      }
+      if (!(await user.comparePassword(password))) {
+        sendError(res, 'Incorrect password. Please try again.', 401);
         return;
       }
 

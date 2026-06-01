@@ -121,7 +121,7 @@ export function LeadForm({ lead, onClose }: Props) {
               <input {...register('position')} placeholder="CEO, VP Sales..." className={inputClass} />
             </div>
             <div>
-              <label className={labelClass}>Deal Value ($)</label>
+              <label className={labelClass}>Deal Value (₹)</label>
               <input {...register('value')} type="number" placeholder="50000" className={inputClass} />
             </div>
           </div>

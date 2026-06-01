@@ -60,7 +60,7 @@ export function KanbanBoard({ data: initialData }: Props) {
       {/* Header stats */}
       <div className="grid grid-cols-3 gap-4 mb-6">
         {[
-          { label: 'Total Pipeline Value', value: `$${(totalValue / 1000).toFixed(0)}k` },
+          { label: 'Total Pipeline Value', value: `₹${(totalValue / 1000).toFixed(0)}k` },
           {
             label: 'Active Leads',
             value: Object.values(columns).flat().filter(l => !['won', 'lost'].includes(l.status)).length,

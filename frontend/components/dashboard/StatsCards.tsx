@@ -1,6 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
-import { TrendingUp, TrendingDown, Users, DollarSign, Target, Trophy } from 'lucide-react';
+import { TrendingUp, TrendingDown, Users, IndianRupee, Target, Trophy } from 'lucide-react';
 import { DashboardStats } from '@/types';
 import { formatCurrency } from '@/lib/utils';
 import { cn } from '@/lib/utils';
@@ -93,7 +93,7 @@ export function StatsCards({ stats, isLoading }: Props) {
       title: 'Total Revenue',
       value: formatCurrency(stats.totalRevenue),
       change: stats.revenueGrowth,
-      icon: DollarSign,
+      icon: IndianRupee,
       iconColor: 'bg-cyan-500/10 text-cyan-400',
       gradient: 'bg-gradient-to-br from-cyan-500 to-cyan-700',
     },

@@ -43,7 +43,7 @@ export function errorHandler(
     message = 'Duplicate field value';
   }
 
-  const response: Record<string, unknown> = { success: false, message };
+  const response: Record<string, unknown> = { status: 'error', message };
   if (errors) response.errors = errors;
   if (process.env.NODE_ENV === 'development') response.stack = err.stack;
 
@@ -52,5 +52,5 @@ export function errorHandler(
 }
 
 export function notFound(_req: Request, res: Response): void {
-  res.status(404).json({ success: false, message: 'Route not found' });
+  res.status(404).json({ status: 'error', message: 'Route not found' });
 }

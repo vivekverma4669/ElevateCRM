@@ -154,7 +154,7 @@ export const aiController = {
       const context = `
 Total leads: ${totalLeads}
 Won leads: ${wonLeads}
-Recent leads: ${recentLeads.map((l) => `${l.name} (${l.company ?? 'N/A'}, ${l.status}, $${l.value ?? 0})`).join('; ')}
+Recent leads: ${recentLeads.map((l) => `${l.name} (${l.company ?? 'N/A'}, ${l.status}, ₹${l.value ?? 0})`).join('; ')}
 Today's date: ${new Date().toLocaleDateString()}
       `.trim();
 

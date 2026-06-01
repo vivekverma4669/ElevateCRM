@@ -43,7 +43,7 @@ export const leadController = {
       ]);
 
       const result = {
-        success: true,
+        status: 'success' as const,
         message: 'Leads retrieved',
         data: { leads },
         meta: {

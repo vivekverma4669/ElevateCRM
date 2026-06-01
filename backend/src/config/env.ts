@@ -14,7 +14,7 @@ const envSchema = z.object({
   REDIS_URL: z.string().default('redis://localhost:6379'),
   REDIS_PASSWORD: z.string().optional(),
   REDIS_TLS: z.string().default('false'),
-  GEMINI_API_KEY: z.string().min(1, 'Gemini API key is required'),
+  GROQ_API_KEY: z.string().min(1, 'Groq API key is required'),
   FRONTEND_URL: z.string().default('http://localhost:3000'),
   AI_RATE_LIMIT_WINDOW_MS: z.string().default('900000'),
   AI_RATE_LIMIT_MAX: z.string().default('50'),

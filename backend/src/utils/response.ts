@@ -1,10 +1,10 @@
 import { Response } from 'express';
 
 export interface ApiResponse<T = unknown> {
-  success: boolean;
+  status: 'success' | 'error';
   message: string;
   data?: T;
-  error?: string;
+  errors?: unknown;
   meta?: {
     page?: number;
     limit?: number;
@@ -20,7 +20,7 @@ export function sendSuccess<T>(
   statusCode = 200,
   meta?: ApiResponse['meta']
 ): void {
-  const response: ApiResponse<T> = { success: true, message, data };
+  const response: ApiResponse<T> = { status: 'success', message, data };
   if (meta) response.meta = meta;
   res.status(statusCode).json(response);
 }
@@ -29,10 +29,10 @@ export function sendError(
   res: Response,
   message: string,
   statusCode = 500,
-  error?: string
+  errors?: unknown
 ): void {
-  const response: ApiResponse = { success: false, message };
-  if (error && process.env.NODE_ENV === 'development') response.error = error;
+  const response: ApiResponse = { status: 'error', message };
+  if (errors) response.errors = errors;
   res.status(statusCode).json(response);
 }
 
