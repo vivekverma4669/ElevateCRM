@@ -92,9 +92,9 @@ const config = {
           to: { height: "0" },
         },
         "glow-pulse": {
-          "0%, 100%": { boxShadow: "0 0 5px #22d3ee, 0 0 10px #22d3ee" },
+          "0%, 100%": { boxShadow: "0 0 4px rgba(34,211,238,0.25), 0 0 8px rgba(34,211,238,0.1)" },
           "50%": {
-            boxShadow: "0 0 20px #22d3ee, 0 0 40px #22d3ee, 0 0 60px #22d3ee",
+            boxShadow: "0 0 8px rgba(34,211,238,0.35), 0 0 16px rgba(34,211,238,0.15)",
           },
         },
         shimmer: {
