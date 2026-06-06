@@ -11,6 +11,9 @@ import {
   Settings,
   LogOut,
   ChevronRight,
+  BookUser,
+  CheckSquare,
+  Mail,
 } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 import { cn } from '@/lib/utils';
@@ -20,6 +23,9 @@ const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/dashboard/leads', icon: Users, label: 'Leads' },
   { href: '/dashboard/pipeline', icon: Kanban, label: 'Pipeline' },
+  { href: '/dashboard/contacts', icon: BookUser, label: 'Contacts' },
+  { href: '/dashboard/tasks', icon: CheckSquare, label: 'Tasks' },
+  { href: '/dashboard/emails', icon: Mail, label: 'Email Tracking' },
   { href: '/dashboard/ai', icon: Sparkles, label: 'AI Studio', ai: true },
   { href: '/dashboard/activities', icon: Activity, label: 'Activities' },
 ];

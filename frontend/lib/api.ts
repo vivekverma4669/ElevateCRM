@@ -75,3 +75,39 @@ export const aiApi = {
 export const activitiesApi = {
   getRecent: () => api.get('/activities/recent'),
 };
+
+// Contacts
+export const contactsApi = {
+  getAll: (params?: Record<string, unknown>) => api.get('/contacts', { params }),
+  getOne: (id: string) => api.get(`/contacts/${id}`),
+  create: (data: unknown) => api.post('/contacts', data),
+  update: (id: string, data: unknown) => api.patch(`/contacts/${id}`, data),
+  delete: (id: string) => api.delete(`/contacts/${id}`),
+};
+
+// Companies
+export const companiesApi = {
+  getAll: (params?: Record<string, unknown>) => api.get('/companies', { params }),
+  getOne: (id: string) => api.get(`/companies/${id}`),
+  create: (data: unknown) => api.post('/companies', data),
+  update: (id: string, data: unknown) => api.patch(`/companies/${id}`, data),
+  delete: (id: string) => api.delete(`/companies/${id}`),
+};
+
+// Tasks
+export const tasksApi = {
+  getAll: (params?: Record<string, unknown>) => api.get('/tasks', { params }),
+  getStats: () => api.get('/tasks/stats'),
+  getOne: (id: string) => api.get(`/tasks/${id}`),
+  create: (data: unknown) => api.post('/tasks', data),
+  update: (id: string, data: unknown) => api.patch(`/tasks/${id}`, data),
+  delete: (id: string) => api.delete(`/tasks/${id}`),
+};
+
+// Email logs
+export const emailsApi = {
+  getAll: (params?: Record<string, unknown>) => api.get('/emails', { params }),
+  getStats: () => api.get('/emails/stats'),
+  log: (data: unknown) => api.post('/emails', data),
+  delete: (id: string) => api.delete(`/emails/${id}`),
+};

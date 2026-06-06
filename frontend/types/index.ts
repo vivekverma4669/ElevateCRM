@@ -120,6 +120,96 @@ export interface AISalesInsights {
   weeklyStrategy: string;
 }
 
+export type CompanySize = 'startup' | 'small' | 'medium' | 'large' | 'enterprise';
+export type TaskStatus = 'todo' | 'in_progress' | 'done' | 'cancelled';
+export type TaskPriority = 'low' | 'medium' | 'high' | 'urgent';
+export type EmailStatus = 'sent' | 'opened' | 'clicked';
+
+export interface Company {
+  _id: string;
+  name: string;
+  website?: string;
+  industry?: string;
+  size?: CompanySize;
+  location?: string;
+  phone?: string;
+  email?: string;
+  revenue?: number;
+  description?: string;
+  tags: string[];
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Contact {
+  _id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  position?: string;
+  company?: Company;
+  companyName?: string;
+  source: LeadSource;
+  tags: string[];
+  notes?: string;
+  linkedLeads: string[];
+  createdBy: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Task {
+  _id: string;
+  title: string;
+  description?: string;
+  dueDate?: string;
+  status: TaskStatus;
+  priority: TaskPriority;
+  assignedTo?: Pick<User, '_id' | 'name' | 'avatar'>;
+  createdBy: Pick<User, '_id' | 'name'>;
+  relatedLead?: Pick<Lead, '_id' | 'name' | 'company' | 'status'>;
+  relatedContact?: Pick<Contact, '_id' | 'name' | 'email'>;
+  completedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EmailLog {
+  _id: string;
+  subject: string;
+  body: string;
+  to: string;
+  toName?: string;
+  lead?: Pick<Lead, '_id' | 'name' | 'company'>;
+  contact?: Pick<Contact, '_id' | 'name' | 'email'>;
+  sentBy: string;
+  status: EmailStatus;
+  trackingId: string;
+  openedAt?: string;
+  clickedAt?: string;
+  openCount: number;
+  clickCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TaskStats {
+  todo: number;
+  inProgress: number;
+  done: number;
+  overdue: number;
+}
+
+export interface EmailStats {
+  total: number;
+  opened: number;
+  clicked: number;
+  openRate: number;
+  clickRate: number;
+}
+
 export interface ApiResponse<T> {
   success: boolean;
   message: string;

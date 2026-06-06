@@ -11,6 +11,10 @@ import leadRoutes from './routes/leads';
 import aiRoutes from './routes/ai';
 import dashboardRoutes from './routes/dashboard';
 import activityRoutes from './routes/activities';
+import contactRoutes from './routes/contacts';
+import companyRoutes from './routes/companies';
+import taskRoutes from './routes/tasks';
+import emailRoutes from './routes/emails';
 import { env } from './config/env';
 
 const app = express();
@@ -42,6 +46,10 @@ app.use(`${API_PREFIX}/leads`, leadRoutes);
 app.use(`${API_PREFIX}/ai`, aiRoutes);
 app.use(`${API_PREFIX}/dashboard`, dashboardRoutes);
 app.use(`${API_PREFIX}/activities`, activityRoutes);
+app.use(`${API_PREFIX}/contacts`, contactRoutes);
+app.use(`${API_PREFIX}/companies`, companyRoutes);
+app.use(`${API_PREFIX}/tasks`, taskRoutes);
+app.use(`${API_PREFIX}/emails`, emailRoutes);
 
 // Error handling
 app.use(notFound);
