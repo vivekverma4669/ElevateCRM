@@ -14,6 +14,7 @@ import {
   BookUser,
   CheckSquare,
   Mail,
+  TrendingUp,
 } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 import { cn } from '@/lib/utils';
@@ -26,6 +27,7 @@ const navItems = [
   { href: '/dashboard/contacts', icon: BookUser, label: 'Contacts' },
   { href: '/dashboard/tasks', icon: CheckSquare, label: 'Tasks' },
   { href: '/dashboard/emails', icon: Mail, label: 'Email Tracking' },
+  { href: '/dashboard/revenue', icon: TrendingUp, label: 'Revenue' },
   { href: '/dashboard/ai', icon: Sparkles, label: 'AI Studio', ai: true },
   { href: '/dashboard/activities', icon: Activity, label: 'Activities' },
 ];
